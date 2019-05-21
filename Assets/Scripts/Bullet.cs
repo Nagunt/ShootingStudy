@@ -39,10 +39,20 @@ public class Bullet : MonoBehaviour
     // 아래의 코드는 Wall 이라는 Tag를 가진 Object와 충돌하면 총알을 삭제하는 코드입니다. 총알이 화면 밖으로 나가도 Scene안에 남아 있는 문제를 해결하기 위한 것입니다.
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(collision.tag);
-        if (collision.CompareTag("Wall"))
+        Transform target = MyFunc.GetParent(collision);
+        MyFunc.Log("충돌하였습니다");
+        switch (target.tag)
         {
-            Destroy(gameObject);
+            case "Wall":
+                Destroy(gameObject);
+                break;
+            case "Enemy":
+                Enemy enemy = target.GetComponent<Enemy>();
+                if (enemy != null) enemy.HP--;
+                Destroy(gameObject);
+                break;
         }
     }
+
+
 }
