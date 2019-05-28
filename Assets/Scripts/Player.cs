@@ -58,12 +58,16 @@ public class Player : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         HP = MAXHP; // 체력을 최대 체력으로 초기화
         Power = 0;
         cooldown = 0;
+        firePos = transform.Find("FirePosition");
+    }
+
+    private void Start()
+    {
         limitPosition = Camera.main.ScreenToWorldPoint(new Vector3(
             Screen.width, Screen.height));
         // Camera.main은 기본적으로 Scene에 배치되어 있는 Main Camera를 가리킵니다.
@@ -76,7 +80,6 @@ public class Player : MonoBehaviour
         // 위의 함수는 Prefabs 폴더 안의 Bullet이라는 Prefab을 불러와 bullet이라는 변수에 저장하는 코드입니다.
         // Prefab이란, 미리 만들어 둔 GameObject를 복제하여 사용할 수 있도록 파일로 만든 것입니다.
         // Hierarchy에서 확인하면 일반적인 흰색 아이콘이 아닌, 푸른 색 아이콘으로 되어 있는 GameObject를 볼 수 있는데, 이는 Prefab화 되었다는 의미입니다.
-        firePos = transform.Find("FirePosition");
     }
 
     // 추가로 파워업을 구현하였습니다. ( 토요일 반에서만 하였습니다. 금요일 반도 이 부분을 참고해 주세요.)
@@ -104,6 +107,9 @@ public class Player : MonoBehaviour
         // power가 1이라면 FirePosition의 하위 오브젝트 Pos_1와 Pos_2의 하위 오브젝트들을 가져와서 그 위치에 각각 총알을 생성할 것입니다.
         // 마지막으로 power가 2이라면 FirePositon의 하위 오브젝트 Pos_1, Pos_2, Pos_3의 하위 오브젝트들을 가져와서 그 위치에 각각 총알을 생성할 것입니다.
         // Pos_n의 하위 오브젝트의 수에 따라서 총알을 생성하기에, 에디터에서 이들 오브젝트에 빈 오브젝트를 추가해서 위치를 조정하기만 하면 쉽게 파워업의 기능을 수정할 수 있을 것입니다.
+
+        // sfx라는 이름의 효과음을 재생합니다.
+        SoundManager.Instance.PlaySFX("sfx");
         cooldown = MAXCOOLDOWN;
         /*
         // Instantiate(원본 게임오브젝트)는 게임오브젝트를 복제하는 함수입니다.
